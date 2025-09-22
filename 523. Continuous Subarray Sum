@@ -1,0 +1,16 @@
+#https://leetcode.com/problems/continuous-subarray-sum/description/
+
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        prefix_mod = {0: -1} # handle cases where a subarray starting from index 0 has a sum divisible by k.
+        currentsum = 0
+        for i in range(0,len(nums)):
+            currentsum += nums[i]
+            mod = currentsum % k
+            if mod in prefix_mod and i - prefix_mod[mod] >= 2:
+                return True
+            elif mod not in prefix_mod:
+                prefix_mod[mod] = i
+            #print(prefix_mod)
+
+        return False     
