@@ -1,0 +1,18 @@
+#https://leetcode.com/problems/find-peak-element/description/?envType=problem-list-v2&envId=binary-search
+#A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find a peak element, and return its index. 
+#If the array contains multiple peaks, return the index to any of the peaks. You may imagine that nums[-1] = nums[n] = -∞. 
+#In other words, an element is always considered to be strictly greater than a neighbor that is outside the array. You must write an algorithm that runs in O(log n) time.
+
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        left, right = 0, len(nums) - 1
+        
+        while left < right:
+            mid = left + (right - left) // 2
+            # Compare mid element with the next element
+            if nums[mid] > nums[mid + 1]:
+                right = mid  # Peak must be on the left side
+            else:
+                left = mid + 1  # Peak must be on the right side
+        
+        return left  # At the end, left == right, which is the peak
