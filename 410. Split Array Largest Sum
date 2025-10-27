@@ -1,0 +1,48 @@
+#Given an integer array nums and an integer k, split nums into k non-empty subarrays such that the largest sum of any subarray is minimized. Return the minimized largest sum of the split. A subarray is a contiguous part of the array.
+#https://leetcode.com/problems/split-array-largest-sum/description/
+
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        from typing import List
+
+        def can_split(nums: List[int], k: int, max_sum: int) -> bool:
+            """
+            Kiểm tra xem có thể chia mảng nums thành k đoạn
+            sao cho tổng của mỗi đoạn <= max_sum không.
+            """
+            current_sum = 0
+            count = 1  # bắt đầu với 1 đoạn
+
+            for num in nums:
+                if current_sum + num > max_sum:
+                    # Bắt đầu một đoạn mới
+                    count += 1
+                    current_sum = num
+                    if count > k:
+                        return False
+                else:
+                    current_sum += num
+
+            return True
+
+        def split_array(nums: List[int], k: int) -> int:
+          """
+          Tìm tổng lớn nhất của đoạn con nhỏ nhất sau khi chia nums thành k đoạn
+          sao cho giá trị này là nhỏ nhất.
+          """
+            left = max(nums)         # Tổng tối thiểu của một đoạn là phần tử lớn nhất
+            right = sum(nums)        # Tổng tối đa của một đoạn là tổng mảng
+            result = right
+
+            while left <= right:
+                mid = (left + right) // 2
+                if can_split(nums, k, mid):
+                    result = mid      # Có thể chia được, tìm giá trị nhỏ hơn
+                    right = mid - 1
+                else:
+                    left = mid + 1    # Không thể chia được, tăng giá trị
+
+            return result
+
+
+        return split_array(nums, k) 
