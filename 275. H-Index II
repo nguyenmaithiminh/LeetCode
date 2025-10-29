@@ -1,0 +1,30 @@
+#https://leetcode.com/problems/h-index-ii/description/?envType=problem-list-v2&envId=binary-search
+#According to the definition of h-index on Wikipedia: The h-index is defined as the maximum value of h such that the given researcher has published at least h papers that have each been cited at least h times.
+
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+
+        left, right = 0, len(citations)
+        
+        while(left<=right):
+            mid = (left+right) // 2
+            l = 0
+            r = len(citations) - 1
+
+            while(l<=r):
+                m = (l+r) // 2
+                if citations[m] >= mid:
+                    r = m - 1
+                else:
+                    l = m + 1
+            paper_at_least_x = len(citations) - l
+            #print(mid,paper_at_least_x)
+
+            if mid == paper_at_least_x:
+                return mid
+            elif mid > paper_at_least_x:
+                right = mid - 1
+            else:
+                left = mid + 1
+            
+        return right
