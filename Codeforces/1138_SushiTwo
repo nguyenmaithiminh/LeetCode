@@ -1,0 +1,50 @@
+#https://codeforces.com/problemset/problem/1138/A
+
+def can_split(groups, mid):
+    """
+    Check if there's a valid subarray of even length 'mid'
+    using precomputed consecutive group lengths.
+    """
+    # For every adjacent pair of groups, check if 2 * min(len1, len2) >= mid
+    for i in range(1, len(groups)):
+        if 2 * min(groups[i], groups[i - 1]) >= mid:
+            return True
+    return False
+ 
+ 
+def main():
+    n = int(input())
+    a = list(map(int, input().split()))
+ 
+    # Step 1: Group consecutive equal elements
+    groups = []
+    cnt = 1
+    for i in range(1, n):
+        if a[i] == a[i - 1]:
+            cnt += 1
+        else:
+            groups.append(cnt)
+            cnt = 1
+    groups.append(cnt)
+ 
+    # Step 2: Binary search on even lengths
+    low = 2
+    high = n if n % 2 == 0 else n - 1
+    ans = 0
+ 
+    while low <= high:
+        mid = (low + high) // 2
+        if mid % 2 == 1:
+            mid += 1  # ensure even length
+ 
+        if can_split(groups, mid):
+            ans = mid
+            low = mid + 2  # try longer segment
+        else:
+            high = mid - 2  # try shorter segment
+ 
+    print(ans)
+ 
+ 
+if __name__ == "__main__":
+    main()
