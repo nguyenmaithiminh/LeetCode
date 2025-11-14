@@ -1,6 +1,7 @@
 #https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/description/?envType=problem-list-v2&envId=prefix-sum
 
 import bisect
+#bisect là một module trong Python dùng để thao tác với danh sách đã được sắp xếp (sorted list) theo kiểu tìm kiếm nhị phân (binary search). Nó giúp bạn tìm vị trí chèn một phần tử vào list sao cho list vẫn được sắp xếp, tìm phần tử ≥ hoặc > một giá trị nào đó, tất cả đều chạy rất nhanh: O(log n).
 
 class Solution:
     def maxSumSubmatrix(self, matrix, k):
