@@ -1,0 +1,43 @@
+#https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/description/?envType=problem-list-v2&envId=prefix-sum
+
+import bisect
+
+class Solution:
+    def maxSumSubmatrix(self, matrix, k):
+        m, n = len(matrix), len(matrix[0])
+        ans = float('-inf')
+
+        # Nếu hàng nhiều hơn cột, ta hoán đổi để đảm bảo n >= m => giảm chiều xử lý (không bắt buộc nhưng tốt)
+        if m > n:
+            # transpose
+            matrix = list(zip(*matrix))
+            m, n = n, m
+
+        # Duyệt left và right cho cột (mảng sums có độ dài m)
+        for left in range(n):
+            sums = [0] * m
+            for right in range(left, n):
+                # cập nhật sums theo cột right
+                for i in range(m):
+                    sums[i] += matrix[i][right]
+
+                # Giờ bài toán thành: tìm subarray sum <= k lớn nhất trong sums[]
+                prefix = 0
+                prefix_sums = [0]   # sorted list
+                cur_max = float('-inf')
+
+                for x in sums:
+                    prefix += x
+                    # Tìm y >= prefix - k → đảm bảo prefix - y <= k
+                    idx = bisect.bisect_left(prefix_sums, prefix - k)
+                    if idx < len(prefix_sums):
+                        cur_max = max(cur_max, prefix - prefix_sums[idx])
+
+                    # chèn prefix vào đúng vị trí
+                    bisect.insort(prefix_sums, prefix)
+
+                ans = max(ans, cur_max)
+                if ans == k:   # không thể lớn hơn
+                    return ans
+
+        return ans
