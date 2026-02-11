@@ -1,0 +1,16 @@
+https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/?envType=problem-list-v2&envId=binary-search
+
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums = sorted(set(nums)) # eliminate duplicates
+        ans = n
+        if n == 1:
+            return 0
+        for i in range(len(nums)):
+            end = nums[i] + n - 1
+            j = bisect_right(nums, end) # binary search to find the first index that is greater than nums[i] + n - 1
+            count = j - i
+            ans = min(ans, n - count)
+        
+        return ans
