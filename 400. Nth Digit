@@ -1,0 +1,25 @@
+#Given an integer n, return the nth digit of the infinite integer sequence [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...].
+#https://leetcode.com/problems/nth-digit/description/
+
+class Solution:
+    def findNthDigit(self, n: int) -> int:
+        i = 0
+        ttcsdt = 0
+        n1 = n
+        x = 0
+        while(n>=x):
+            i += 1
+            x += i *9*pow(10,i-1)
+            if n - x < 0:
+                temp = x - i *9*pow(10,i-1) + 1
+                stt = max(0,(n-temp) // i)
+            if n - x == 0:
+                stt = 9*pow(10,i-1) - 1
+                break
+            if n - x > 0:
+                ttcsdt += i *9*pow(10,i-1)
+
+        sct = pow(10,i-1) + stt 
+        sct=str(sct)
+        ttcs = (n1 - ttcsdt-1) % i
+        return int(sct[ttcs])
